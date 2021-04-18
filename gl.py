@@ -48,14 +48,14 @@ def write_all_projects_to_json(file_name='projects', visibility=DEFAULT_VISIBILI
     projects = get_all_projects(visibility)
     projects_dict = {}
     for p in projects:
-        projects_dict[p.name] = p.id
+        projects_dict[p.path] = p.id
     write_to_json(projects_dict, file_name)
 
 def write_all_groups_to_json(file_name='groups', visibility=DEFAULT_VISIBILITY):
     groups = get_all_groups(visibility)
     groups_dict = {}
     for g in groups:
-        groups_dict[g.name] = g.id
+        groups_dict[g.path] = g.id
     write_to_json(groups_dict, file_name)
 
 
@@ -67,14 +67,14 @@ def write_all_projects_to_memcached(visibility=DEFAULT_VISIBILITY):
     projects = get_all_projects(visibility)
     projects_dict = {}
     for p in projects:
-        projects_dict[g.name] = g.id
+        projects_dict[g.path] = g.id
     write_many_to_memcached(projects_dict)
 
 def write_all_groups_to_memcached(visibility=DEFAULT_VISIBILITY):
     groups = get_all_groups(visibility)
     groups_dict = {}
     for g in groups:
-        groups_dict[g.name.replace(' ', '_')] = g.id
+        groups_dict[g.path] = g.id
     write_many_to_memcached(groups_dict)
 
 # Дописать
@@ -90,7 +90,7 @@ def delete_user_from_all_projects(user_query, dry=False):
     del_projects_count = 0
 
     for p in projects:
-        print(f'Project "{p.name_with_namespace}" (id={p.id}) :', end='')
+        print(f'Project "{p.path_with_namespace}" (id={p.id}) :', end='')
 
         # Query members.
         members = p.members.list(query=user_query)
