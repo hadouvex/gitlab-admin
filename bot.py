@@ -7,6 +7,7 @@ from env import env
 TOKEN = env['BOT_TOKEN']
 URL_BASE = f'https://api.telegram.org/bot{TOKEN}/'
 
+last_update_id = None
 
 def send_message(chat_id, text='No message were recieved'):
     url = URL_BASE + f'sendmessage?chat_id={chat_id}&text={text}'
@@ -22,9 +23,9 @@ def get_last_message():
 
     last_element = data['result'][-1]
     current_update_id = last_element['update_id']
-    
-    global last_update_id
+
     if last_update_id != current_update_id:
+        global last_update_id
         last_update_id = current_update_id
 
         chat_id = last_element['message']['chat']['id']
